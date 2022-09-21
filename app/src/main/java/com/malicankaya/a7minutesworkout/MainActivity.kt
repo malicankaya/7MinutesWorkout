@@ -4,18 +4,21 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.Toast
+import com.malicankaya.a7minutesworkout.databinding.ActivityMainBinding
+import java.util.zip.Inflater
 
 class MainActivity : AppCompatActivity() {
+    private var binding: ActivityMainBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        val flStartButton: FrameLayout = findViewById(R.id.flStartButton)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
 
-        flStartButton.setOnClickListener {
+        binding?.flStartButton?.setOnClickListener {
             Toast.makeText(
                 this,
-                "Excercise will be start",
+                "Exercise will be start",
                 Toast.LENGTH_SHORT
             ).show()
         }
