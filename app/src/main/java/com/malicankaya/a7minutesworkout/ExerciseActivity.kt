@@ -1,5 +1,7 @@
 package com.malicankaya.a7minutesworkout
 
+import android.media.MediaPlayer
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -10,6 +12,7 @@ import android.widget.Toast
 import com.malicankaya.a7minutesworkout.databinding.ActivityExerciseBinding
 import androidx.constraintlayout.widget.ConstraintSet
 import org.w3c.dom.Text
+import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -28,6 +31,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var currentExercisePosition = -1
 
     private var tts: TextToSpeech? = null
+    private var player: MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +58,18 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     }
 
     private fun setReadyTimer() {
+
+        try {
+            val soundUri =
+                Uri.parse("android.resource://com.malicankaya.a7minutesworkout/" + R.raw.press_start)
+            player = MediaPlayer.create(applicationContext, soundUri)
+            player?.isLooping = false
+            player?.start()
+
+        } catch (e: Exception) {
+            Log.e("Player Error", "An error occurred while playing sound")
+        }
+
         binding?.tvGetReady?.visibility = View.VISIBLE
         binding?.flReady?.visibility = View.VISIBLE
         binding?.tvUpcomingExerciseLabel?.visibility = View.VISIBLE
@@ -148,13 +164,13 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     }
 
     override fun onInit(status: Int) {
-        if(status == TextToSpeech.SUCCESS){
+        if (status == TextToSpeech.SUCCESS) {
             val result = tts?.setLanguage(Locale.US)
 
-            if(result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED){
-                Log.e("TTS","The language specified is not supported.")
-            }else{
-                Log.e("TTS","Initialization Failed!")
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.e("TTS", "The language specified is not supported.")
+            } else {
+                Log.e("TTS", "Initialization Failed!")
             }
         }
     }
@@ -173,6 +189,11 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         if (tts != null) {
             tts?.stop()
             tts?.shutdown()
+        }
+
+        if (player != null) {
+            player?.stop()
+            player = null
         }
         binding = null
     }
