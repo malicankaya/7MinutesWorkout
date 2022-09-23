@@ -9,8 +9,6 @@ import com.malicankaya.a7minutesworkout.databinding.ActivityExerciseBinding
 import androidx.constraintlayout.widget.ConstraintSet
 
 
-
-
 class ExerciseActivity : AppCompatActivity() {
     var binding: ActivityExerciseBinding? = null
     private var readyCountDownTimer: CountDownTimer? = null
@@ -39,19 +37,22 @@ class ExerciseActivity : AppCompatActivity() {
             onBackPressed()
         }
 
-        setTimer()
+        binding?.progressBarReady?.max = readyTimerSec.toInt()
+        binding?.exerciseProgressBar?.max = exerciseTimerSec.toInt()
+
+        setReadyTimer()
 
     }
 
-    private fun setTimer() {
-        if (readyCountDownTimer != null){
+    private fun setReadyTimer() {
+        if (readyCountDownTimer != null) {
             readyCountDownTimer?.cancel()
             readyTimerProgressSec = 0
         }
-        setTimerProgressBar()
+        setReadyTimerProgressBar()
     }
 
-    private fun setTimerProgressBar() {
+    private fun setReadyTimerProgressBar() {
         binding?.progressBarReady?.progress = readyTimerSec.toInt()
         binding?.tvReadyCount?.text = readyTimerSec.toString()
 
@@ -59,8 +60,10 @@ class ExerciseActivity : AppCompatActivity() {
             override fun onTick(millisUntilFinished: Long) {
                 readyTimerProgressSec++
                 binding?.progressBarReady?.progress = readyTimerSec.toInt() - readyTimerProgressSec
-                binding?.tvReadyCount?.text = (readyTimerSec.toInt() - readyTimerProgressSec).toString()
+                binding?.tvReadyCount?.text =
+                    (readyTimerSec.toInt() - readyTimerProgressSec).toString()
             }
+
             override fun onFinish() {
                 currentExercisePosition++
                 exerciseSetTimer()
@@ -69,15 +72,17 @@ class ExerciseActivity : AppCompatActivity() {
     }
 
     private fun exerciseSetTimer() {
-        binding?.flReady?.visibility = View.GONE
-        val constraintSet = ConstraintSet()
-        constraintSet.clone(binding?.root)
-        constraintSet.connect(binding?.tvExercise!!.id,ConstraintSet.BOTTOM,binding?.flExercise!!.id,ConstraintSet.TOP,0);
-        constraintSet.applyTo(binding?.root)
-        binding?.tvExercise?.text = "Exercise name"
-        binding?.flExercise?.visibility = View.VISIBLE
+        binding?.tvGetReady?.visibility = View.INVISIBLE
+        binding?.flReady?.visibility = View.INVISIBLE
 
-        if (exerciseCountDownTimer != null){
+        binding?.tvExerciseName?.visibility = View.VISIBLE
+        binding?.flExercise?.visibility = View.VISIBLE
+        binding?.ivExerciseImage?.visibility = View.VISIBLE
+
+        binding?.tvExerciseName?.text = exerciseList!![currentExercisePosition].getName()
+        binding?.ivExerciseImage?.setImageResource(exerciseList!![currentExercisePosition].getImage())
+
+        if (exerciseCountDownTimer != null) {
             exerciseCountDownTimer?.cancel()
             exerciseTimerProgressSec = 0
         }
@@ -92,12 +97,25 @@ class ExerciseActivity : AppCompatActivity() {
         readyCountDownTimer = object : CountDownTimer(exerciseTimerSec * 1000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 exerciseTimerProgressSec++
-                binding?.exerciseProgressBar?.progress = exerciseTimerSec.toInt() - exerciseTimerProgressSec
-                binding?.tvExerciseCount?.text = (exerciseTimerSec.toInt() - exerciseTimerProgressSec).toString()
+                binding?.exerciseProgressBar?.progress =
+                    exerciseTimerSec.toInt() - exerciseTimerProgressSec
+                binding?.tvExerciseCount?.text =
+                    (exerciseTimerSec.toInt() - exerciseTimerProgressSec).toString()
             }
+
             override fun onFinish() {
-                Toast.makeText(this@ExerciseActivity,"Now, we will start the exercise.",
-                    Toast.LENGTH_SHORT).show()
+                currentExercisePosition++
+                exerciseTimerProgressSec = 0
+
+                if (currentExercisePosition < exerciseList!!.size) {
+                    exerciseSetTimer()
+                } else {
+                    Toast.makeText(
+                        this@ExerciseActivity,
+                        "Congratulations! You have completed 7 Minutes Workout",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }.start()
     }

@@ -15,12 +15,25 @@
         app:titleTextColor="@color/colorPrimary"
         />
 
+    <ImageView
+        android:id="@+id/ivExerciseImage"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:visibility="invisible"
+        android:src="@drawable/ic_abdominal_crunch"
+        app:layout_constraintTop_toBottomOf="@id/toolbarExercise"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tvExerciseName"/>
+
     <TextView
-        android:id="@+id/tvExercise"
+        android:id="@+id/tvGetReady"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:textSize="22sp"
+        tools:visibility="invisible"
         android:text="GET READY FOR"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,6 +41,7 @@
         />
 
     <FrameLayout
+        tools:visibility="invisible"
         android:id="@+id/flReady"
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -72,6 +86,21 @@
 
     </FrameLayout>
 
+    <TextView
+        android:visibility="invisible"
+        tools:visibility="visible"
+        android:id="@+id/tvExerciseName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:layout_marginTop="10dp"
+        android:text="Exercise Name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/flExercise"
+        />
+
     <FrameLayout
         android:id="@+id/flExercise"
         android:layout_width="100dp"
@@ -82,7 +111,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbarExercise"
+        app:layout_constraintTop_toBottomOf="@id/ivExerciseImage"
         >
 
         <ProgressBar
