@@ -2,4 +2,6 @@
     <string name="app_name">7 Minutes Workout</string>
     <string name="image_description">image</string>
     <string name="button_start_text">START</string>
+    <string name="text_view_upcoming_exercise_label_text">UPCOMING EXERCISE:</string>
+    <string name="text_view_get_ready_for_text">GET READY FOR</string>
 </resources>
