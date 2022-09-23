@@ -21,10 +21,14 @@ class ExerciseActivity : AppCompatActivity() {
     private var exerciseTimerProgressSec = 0
     private var exerciseTimerSec: Long = 30
 
+    private var exerciseList: ArrayList<ExerciseModel>? = null
+    private var currentExercisePosition = -1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityExerciseBinding.inflate(layoutInflater)
         setContentView(binding?.root)
+        exerciseList = Constants.defaultExerciseList()
 
         setSupportActionBar(binding?.toolbarExercise)
         if (supportActionBar != null) {
@@ -58,6 +62,7 @@ class ExerciseActivity : AppCompatActivity() {
                 binding?.tvReadyCount?.text = (readyTimerSec.toInt() - readyTimerProgressSec).toString()
             }
             override fun onFinish() {
+                currentExercisePosition++
                 exerciseSetTimer()
             }
         }.start()
