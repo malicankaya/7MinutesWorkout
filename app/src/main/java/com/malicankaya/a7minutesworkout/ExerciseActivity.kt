@@ -13,11 +13,11 @@ class ExerciseActivity : AppCompatActivity() {
     var binding: ActivityExerciseBinding? = null
     private var readyCountDownTimer: CountDownTimer? = null
     private var readyTimerProgressSec = 0
-    private var readyTimerSec: Long = 10
+    private var readyTimerSec: Long = 3
 
     private var exerciseCountDownTimer: CountDownTimer? = null
     private var exerciseTimerProgressSec = 0
-    private var exerciseTimerSec: Long = 30
+    private var exerciseTimerSec: Long = 3
 
     private var exerciseList: ArrayList<ExerciseModel>? = null
     private var currentExercisePosition = -1
@@ -45,6 +45,18 @@ class ExerciseActivity : AppCompatActivity() {
     }
 
     private fun setReadyTimer() {
+        binding?.tvGetReady?.visibility = View.VISIBLE
+        binding?.flReady?.visibility = View.VISIBLE
+        binding?.tvUpcomingExerciseLabel?.visibility = View.VISIBLE
+        binding?.tvUpcomingExerciseName?.visibility = View.VISIBLE
+
+        binding?.tvExerciseName?.visibility = View.INVISIBLE
+        binding?.flExercise?.visibility = View.INVISIBLE
+        binding?.ivExerciseImage?.visibility = View.INVISIBLE
+
+        binding?.tvUpcomingExerciseName?.text =
+            exerciseList!![currentExercisePosition + 1].getName()
+
         if (readyCountDownTimer != null) {
             readyCountDownTimer?.cancel()
             readyTimerProgressSec = 0
@@ -74,6 +86,8 @@ class ExerciseActivity : AppCompatActivity() {
     private fun exerciseSetTimer() {
         binding?.tvGetReady?.visibility = View.INVISIBLE
         binding?.flReady?.visibility = View.INVISIBLE
+        binding?.tvUpcomingExerciseLabel?.visibility = View.INVISIBLE
+        binding?.tvUpcomingExerciseName?.visibility = View.INVISIBLE
 
         binding?.tvExerciseName?.visibility = View.VISIBLE
         binding?.flExercise?.visibility = View.VISIBLE
@@ -94,7 +108,7 @@ class ExerciseActivity : AppCompatActivity() {
         binding?.exerciseProgressBar?.progress = exerciseTimerSec.toInt()
         binding?.tvExerciseCount?.text = exerciseTimerSec.toString()
 
-        readyCountDownTimer = object : CountDownTimer(exerciseTimerSec * 1000, 1000) {
+        exerciseCountDownTimer = object : CountDownTimer(exerciseTimerSec * 1000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 exerciseTimerProgressSec++
                 binding?.exerciseProgressBar?.progress =
@@ -104,11 +118,9 @@ class ExerciseActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                currentExercisePosition++
-                exerciseTimerProgressSec = 0
-
                 if (currentExercisePosition < exerciseList!!.size) {
-                    exerciseSetTimer()
+                    setReadyTimer()
+
                 } else {
                     Toast.makeText(
                         this@ExerciseActivity,
@@ -119,6 +131,7 @@ class ExerciseActivity : AppCompatActivity() {
             }
         }.start()
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

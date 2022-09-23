@@ -87,19 +87,45 @@
     </FrameLayout>
 
     <TextView
+        android:id="@+id/tvUpcomingExerciseLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_marginTop="10dp"
+        style="bold"
+        android:text="UPCOMING EXERCISE:"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/flReady"
+        />
+
+    <TextView
+        android:id="@+id/tvUpcomingExerciseName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:text="Abdominal Crunch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvUpcomingExerciseLabel"
+        />
+
+    <TextView
         android:visibility="invisible"
         tools:visibility="visible"
         android:id="@+id/tvExerciseName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
         android:textStyle="bold"
         android:textSize="22sp"
         android:layout_marginTop="10dp"
         android:text="Exercise Name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/flExercise"
-        />
+        app:layout_constraintBottom_toTopOf="@id/flExercise"/>
 
     <FrameLayout
         android:id="@+id/flExercise"
@@ -111,7 +137,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ivExerciseImage"
+        android:layout_marginBottom="10dp"
         >
 
         <ProgressBar
