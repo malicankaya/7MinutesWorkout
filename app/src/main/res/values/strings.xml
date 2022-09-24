@@ -4,4 +4,8 @@
     <string name="button_start_text">START</string>
     <string name="text_view_upcoming_exercise_label_text">UPCOMING EXERCISE:</string>
     <string name="text_view_get_ready_for_text">GET READY FOR</string>
+    <string name="finish_activity_textview_text_end">END</string>
+    <string name="finish_activity_textview_text_congrats">Congratulations!</string>
+    <string name="finish_activity_textview_text_completed">You have competed the workout.</string>
+    <string name="finish_activity_button_text_finish">FINISH</string>
 </resources>

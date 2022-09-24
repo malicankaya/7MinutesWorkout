@@ -1,5 +1,6 @@
 package com.malicankaya.a7minutesworkout
 
+import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,7 @@ import androidx.constraintlayout.widget.ConstraintSet
 import org.w3c.dom.Text
 import java.lang.Exception
 import java.util.*
+import java.util.zip.Inflater
 import kotlin.collections.ArrayList
 
 
@@ -21,11 +23,11 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     var binding: ActivityExerciseBinding? = null
     private var readyCountDownTimer: CountDownTimer? = null
     private var readyTimerProgressSec = 0
-    private var readyTimerSec: Long = 3
+    private var readyTimerSec: Long = 1
 
     private var exerciseCountDownTimer: CountDownTimer? = null
     private var exerciseTimerProgressSec = 0
-    private var exerciseTimerSec: Long = 3
+    private var exerciseTimerSec: Long = 1
 
     private var exerciseList: ArrayList<ExerciseModel>? = null
     private var currentExercisePosition = -1
@@ -164,18 +166,17 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             }
 
             override fun onFinish() {
-                if (currentExercisePosition < exerciseList!!.size) {
+                if (currentExercisePosition < exerciseList!!.size - 1) {
+                    exerciseList!![currentExercisePosition ].setIsComplated(true)
+                    exerciseAdapter!!.notifyItemChanged(currentExercisePosition)
                     setReadyTimer()
 
                 } else {
-                    Toast.makeText(
-                        this@ExerciseActivity,
-                        "Congratulations! You have completed 7 Minutes Workout",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    val intent = Intent(this@ExerciseActivity, FinishActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 }
-                exerciseList!![currentExercisePosition ].setIsComplated(true)
-                exerciseAdapter!!.notifyItemChanged(currentExercisePosition)
+
             }
         }.start()
 
