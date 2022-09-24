@@ -1,5 +1,7 @@
 package com.malicankaya.a7minutesworkout
 
+import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
@@ -9,13 +11,11 @@ import android.os.CountDownTimer
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.View
-import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.malicankaya.a7minutesworkout.databinding.ActivityExerciseBinding
-import androidx.constraintlayout.widget.ConstraintSet
-import org.w3c.dom.Text
+import com.malicankaya.a7minutesworkout.databinding.DialogCustomBackConfirmationBinding
 import java.lang.Exception
 import java.util.*
-import java.util.zip.Inflater
 import kotlin.collections.ArrayList
 
 
@@ -48,8 +48,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
         binding?.toolbarExercise?.setNavigationOnClickListener {
-            readyCountDownTimer?.cancel()
-            onBackPressed()
+            dialogCustomForBackButton()
         }
 
         binding?.progressBarReady?.max = readyTimerSec.toInt()
@@ -62,6 +61,27 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
         setReadyTimer()
 
+    }
+
+    override fun onBackPressed() {
+        dialogCustomForBackButton()
+    }
+
+    private fun dialogCustomForBackButton(){
+        val customDialog = Dialog(this)
+        val dialogBinding = DialogCustomBackConfirmationBinding.inflate(layoutInflater)
+        customDialog.setContentView(dialogBinding.root)
+        customDialog.setCanceledOnTouchOutside(false)
+
+        dialogBinding.btnDialogBackYes.setOnClickListener {
+            finish()
+            customDialog.dismiss()
+        }
+        dialogBinding.btnDialogCustomNo.setOnClickListener {
+            customDialog.dismiss()
+        }
+
+        customDialog.show()
     }
 
     private fun setReadyTimer() {
