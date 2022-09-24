@@ -91,6 +91,8 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             readyCountDownTimer?.cancel()
             readyTimerProgressSec = 0
         }
+
+
         setReadyTimerProgressBar()
     }
 
@@ -104,6 +106,14 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                 binding?.progressBarReady?.progress = readyTimerSec.toInt() - readyTimerProgressSec
                 binding?.tvReadyCount?.text =
                     (readyTimerSec.toInt() - readyTimerProgressSec).toString()
+
+                if(exerciseList!![currentExercisePosition+1].getIsSelected()){
+                    exerciseList!![currentExercisePosition+1].setIsSelected(false)
+                    exerciseAdapter!!.notifyItemChanged(currentExercisePosition+1)
+                }else{
+                    exerciseList!![currentExercisePosition+1].setIsSelected(true)
+                    exerciseAdapter!!.notifyItemChanged(currentExercisePosition+1)
+                }
             }
 
             override fun onFinish() {
@@ -128,13 +138,14 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
         speakOut(exerciseList!![currentExercisePosition].getName())
 
+
         if (exerciseCountDownTimer != null) {
             exerciseCountDownTimer?.cancel()
             exerciseTimerProgressSec = 0
         }
 
-
-
+        exerciseList!![currentExercisePosition].setIsSelected(true)
+        exerciseAdapter!!.notifyItemChanged(currentExercisePosition)
         exerciseSetTimerProgressBar()
     }
 
@@ -149,6 +160,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                     exerciseTimerSec.toInt() - exerciseTimerProgressSec
                 binding?.tvExerciseCount?.text =
                     (exerciseTimerSec.toInt() - exerciseTimerProgressSec).toString()
+
             }
 
             override fun onFinish() {
@@ -162,8 +174,11 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+                exerciseList!![currentExercisePosition ].setIsComplated(true)
+                exerciseAdapter!!.notifyItemChanged(currentExercisePosition)
             }
         }.start()
+
     }
 
     private fun speakOut(text: String) {

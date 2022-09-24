@@ -29,6 +29,15 @@ class ExerciseStatusAdapter(val exerciseList: ArrayList<ExerciseModel>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val exercise = exerciseList[position]
         holder.tvItem.text = exercise.getId().toString()
+
+        when{
+            exercise.getIsComplated() -> {
+                holder.tvItem.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.circular_color_accent_background)
+            }
+            exercise.getIsSelected() ->{
+                holder.tvItem.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.exercise_status_active_border)
+            }
+        }
     }
 
     override fun getItemCount(): Int {
