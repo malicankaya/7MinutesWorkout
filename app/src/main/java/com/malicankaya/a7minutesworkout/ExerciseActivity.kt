@@ -33,6 +33,8 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var tts: TextToSpeech? = null
     private var player: MediaPlayer? = null
 
+    private var exerciseAdapter: ExerciseStatusAdapter? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityExerciseBinding.inflate(layoutInflater)
@@ -52,6 +54,9 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         binding?.exerciseProgressBar?.max = exerciseTimerSec.toInt()
 
         tts = TextToSpeech(this, this)
+
+        exerciseAdapter = ExerciseStatusAdapter(exerciseList!!)
+        binding?.rvExerciseStatus?.adapter = exerciseAdapter
 
         setReadyTimer()
 
@@ -127,6 +132,8 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             exerciseCountDownTimer?.cancel()
             exerciseTimerProgressSec = 0
         }
+
+
 
         exerciseSetTimerProgressBar()
     }
