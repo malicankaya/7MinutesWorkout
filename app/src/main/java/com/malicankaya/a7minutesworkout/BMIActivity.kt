@@ -64,12 +64,14 @@ class BMIActivity : AppCompatActivity() {
 
     private fun makeVisibleMetricUnitView(){
         currentVisibleView = METRIC_UNITS_VIEW
+
         binding?.llUSHeightUnits?.visibility = View.INVISIBLE
-        binding?.tilMetricHeight?.visibility = View.INVISIBLE
+        binding?.etMetricHeight?.visibility = View.VISIBLE
 
         binding?.llBMI?.visibility = View.INVISIBLE
 
-        binding?.llUSHeightUnits?.visibility = View.VISIBLE
+        binding?.etWeight?.hint = "WEIGHT (in kg)"
+
 
         binding?.etUSFeet?.text?.clear()
         binding?.etUSInch?.text?.clear()
@@ -78,12 +80,14 @@ class BMIActivity : AppCompatActivity() {
 
     private fun makeVisibleUSUnitView(){
         currentVisibleView = US_UNITS_VIEW
+
         binding?.llUSHeightUnits?.visibility = View.VISIBLE
-        binding?.tilMetricHeight?.visibility = View.VISIBLE
+        binding?.etMetricHeight?.visibility = View.INVISIBLE
 
         binding?.llBMI?.visibility = View.INVISIBLE
 
-        binding?.llUSHeightUnits?.visibility = View.INVISIBLE
+        binding?.etWeight?.hint = "WEIGHT (in pound)"
+
 
         binding?.etMetricHeight?.text?.clear()
         binding?.etWeight?.text?.clear()
