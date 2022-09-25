@@ -10,10 +10,11 @@ import java.math.RoundingMode
 
 class BMIActivity : AppCompatActivity() {
 
-    companion object{
+    companion object {
         private const val METRIC_UNITS_VIEW = "METRIC_UNIT_VIEW"
         private const val US_UNITS_VIEW = "US_UNIT_VIEW"
     }
+
     private var binding: ActivityBmiBinding? = null
     private var currentVisibleView: String =
         METRIC_UNITS_VIEW
@@ -34,14 +35,34 @@ class BMIActivity : AppCompatActivity() {
 
         binding?.btnBMICalculate?.setOnClickListener {
 
-            if (!binding?.etMetricHeight?.text.isNullOrEmpty() && !binding?.etWeight?.text.isNullOrEmpty()) {
+            if (!binding?.etMetricHeight?.text.isNullOrEmpty()
+                || !binding?.etUSFeet?.text.isNullOrEmpty()
+                && !binding?.etUSInch?.text.isNullOrEmpty()
+                && !binding?.etWeight?.text.isNullOrEmpty()
+            ) {
+                val weight: Float
+                val height: Float
+
+
+                if (currentVisibleView == METRIC_UNITS_VIEW) {
+                    weight = binding?.etWeight?.text.toString().toFloat()
+                    height = (binding?.etMetricHeight?.text.toString().toFloat() / 100)
+                } else {
+                    weight = weightChangeToMetric(binding?.etWeight?.text.toString().toFloat())
+                    height = (heightChangeToMetric(
+                        binding?.etUSFeet?.text.toString().toFloat(),
+                        binding?.etUSInch?.text.toString().toFloat()
+                                )) / 100
+                }
+
                 val bmi = calculateBMI(
-                    (binding?.etMetricHeight?.text.toString().toFloat() / 100).toString(),
-                    binding?.etWeight?.text.toString()
+                    height.toString(),
+                    weight.toString()
                 )
                 val bmiType = getBMIType(bmi)
 
                 setBMIViewItems(bmi, bmiType)
+
                 binding?.llBMI?.visibility = View.VISIBLE
 
             } else {
@@ -54,15 +75,15 @@ class BMIActivity : AppCompatActivity() {
         }
 
         binding?.rgUnits?.setOnCheckedChangeListener { _, checkedId ->
-            if(checkedId == R.id.rbUSUnits){
+            if (checkedId == R.id.rbUSUnits) {
                 makeVisibleUSUnitView()
-            }else{
+            } else {
                 makeVisibleMetricUnitView()
             }
         }
     }
 
-    private fun makeVisibleMetricUnitView(){
+    private fun makeVisibleMetricUnitView() {
         currentVisibleView = METRIC_UNITS_VIEW
 
         binding?.llUSHeightUnits?.visibility = View.INVISIBLE
@@ -80,7 +101,7 @@ class BMIActivity : AppCompatActivity() {
         binding?.etWeight?.text?.clear()
     }
 
-    private fun makeVisibleUSUnitView(){
+    private fun makeVisibleUSUnitView() {
         currentVisibleView = US_UNITS_VIEW
 
         binding?.llUSHeightUnits?.visibility = View.VISIBLE
@@ -156,6 +177,14 @@ class BMIActivity : AppCompatActivity() {
         binding?.tvBMIType?.text = bmiType.type
         binding?.tvBMIContent?.text = bmiType.description
 
+    }
+
+    private fun weightChangeToMetric(weight: Float): Float {
+        return weight * 0.45f
+    }
+
+    private fun heightChangeToMetric(feet: Float, inches: Float): Float {
+        return (feet * 30.48f) + (inches * 2.54f)
     }
 
     data class BMIType(val type: String, val description: String)
