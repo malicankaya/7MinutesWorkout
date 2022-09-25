@@ -60,13 +60,13 @@
         android:layout_below="@id/rgUnits"
         android:layout_margin="10dp"
         app:boxStrokeColor="@color/colorAccent"
-        app:hintTextColor="@color/colorAccent">
+        app:hintTextColor="@color/colorAccent"
+        android:hint="WEIGHT (in kg)">
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etWeight"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="WEIGHT (in kg)"
             android:inputType="numberDecimal"
             android:textSize="16sp" />
     </com.google.android.material.textfield.TextInputLayout>
