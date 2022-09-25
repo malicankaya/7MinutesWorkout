@@ -8,4 +8,6 @@
     <string name="finish_activity_textview_text_congrats">Congratulations!</string>
     <string name="finish_activity_textview_text_completed">You have competed the workout.</string>
     <string name="finish_activity_button_text_finish">FINISH</string>
+    <string name="mainactivity_fl_bmi_text">BMI</string>
+    <string name="mainactivity_tv_calculator_text">Calculator</string>
 </resources>

@@ -36,6 +36,8 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var player: MediaPlayer? = null
 
     private var exerciseAdapter: ExerciseStatusAdapter? = null
+    private var pauseActivity = false
+    private var inExercise = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +50,8 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
         binding?.toolbarExercise?.setNavigationOnClickListener {
-            dialogCustomForBackButton()
+
+            onBackPressed()
         }
 
         binding?.progressBarReady?.max = readyTimerSec.toInt()
@@ -63,11 +66,13 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     }
 
+
     override fun onBackPressed() {
+        pauseActivity = true
         dialogCustomForBackButton()
     }
 
-    private fun dialogCustomForBackButton(){
+    private fun dialogCustomForBackButton() {
         val customDialog = Dialog(this)
         val dialogBinding = DialogCustomBackConfirmationBinding.inflate(layoutInflater)
         customDialog.setContentView(dialogBinding.root)
@@ -79,6 +84,12 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         }
         dialogBinding.btnDialogCustomNo.setOnClickListener {
             customDialog.dismiss()
+            pauseActivity = false
+            if (inExercise) {
+                exerciseSetTimerProgressBar()
+            } else {
+                setReadyTimerProgressBar()
+            }
         }
 
         customDialog.show()
@@ -119,30 +130,38 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     }
 
     private fun setReadyTimerProgressBar() {
-        binding?.progressBarReady?.progress = readyTimerSec.toInt()
-        binding?.tvReadyCount?.text = readyTimerSec.toString()
+        binding?.progressBarReady?.progress = readyTimerSec.toInt() - readyTimerProgressSec
+        binding?.tvReadyCount?.text = (readyTimerSec - readyTimerProgressSec).toString()
 
-        readyCountDownTimer = object : CountDownTimer(readyTimerSec * 1000, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                readyTimerProgressSec++
-                binding?.progressBarReady?.progress = readyTimerSec.toInt() - readyTimerProgressSec
-                binding?.tvReadyCount?.text =
-                    (readyTimerSec.toInt() - readyTimerProgressSec).toString()
+        readyCountDownTimer =
+            object : CountDownTimer((readyTimerSec - readyTimerProgressSec) * 1000, 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+                    if (pauseActivity) {
+                        readyCountDownTimer?.cancel()
+                        inExercise = false
+                    } else {
+                        readyTimerProgressSec++
+                        binding?.progressBarReady?.progress =
+                            readyTimerSec.toInt() - readyTimerProgressSec
+                        binding?.tvReadyCount?.text =
+                            (readyTimerSec.toInt() - readyTimerProgressSec).toString()
 
-                if(exerciseList!![currentExercisePosition+1].getIsSelected()){
-                    exerciseList!![currentExercisePosition+1].setIsSelected(false)
-                    exerciseAdapter!!.notifyItemChanged(currentExercisePosition+1)
-                }else{
-                    exerciseList!![currentExercisePosition+1].setIsSelected(true)
-                    exerciseAdapter!!.notifyItemChanged(currentExercisePosition+1)
+                        if (exerciseList!![currentExercisePosition + 1].getIsSelected()) {
+                            exerciseList!![currentExercisePosition + 1].setIsSelected(false)
+                            exerciseAdapter!!.notifyItemChanged(currentExercisePosition + 1)
+                        } else {
+                            exerciseList!![currentExercisePosition + 1].setIsSelected(true)
+                            exerciseAdapter!!.notifyItemChanged(currentExercisePosition + 1)
+                        }
+                    }
+
                 }
-            }
 
-            override fun onFinish() {
-                currentExercisePosition++
-                exerciseSetTimer()
-            }
-        }.start()
+                override fun onFinish() {
+                    currentExercisePosition++
+                    exerciseSetTimer()
+                }
+            }.start()
     }
 
     private fun exerciseSetTimer() {
@@ -172,33 +191,40 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     }
 
     private fun exerciseSetTimerProgressBar() {
-        binding?.exerciseProgressBar?.progress = exerciseTimerSec.toInt()
-        binding?.tvExerciseCount?.text = exerciseTimerSec.toString()
+        binding?.exerciseProgressBar?.progress = exerciseTimerSec.toInt() - exerciseTimerProgressSec
+        binding?.tvExerciseCount?.text = (exerciseTimerSec - exerciseTimerProgressSec).toString()
 
-        exerciseCountDownTimer = object : CountDownTimer(exerciseTimerSec * 1000, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                exerciseTimerProgressSec++
-                binding?.exerciseProgressBar?.progress =
-                    exerciseTimerSec.toInt() - exerciseTimerProgressSec
-                binding?.tvExerciseCount?.text =
-                    (exerciseTimerSec.toInt() - exerciseTimerProgressSec).toString()
+        exerciseCountDownTimer =
+            object : CountDownTimer((exerciseTimerSec - exerciseTimerProgressSec) * 1000, 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+                    if (pauseActivity) {
+                        exerciseCountDownTimer?.cancel()
+                        inExercise = true
+                    } else {
+                        exerciseTimerProgressSec++
+                        binding?.exerciseProgressBar?.progress =
+                            exerciseTimerSec.toInt() - exerciseTimerProgressSec
+                        binding?.tvExerciseCount?.text =
+                            (exerciseTimerSec.toInt() - exerciseTimerProgressSec).toString()
+                    }
 
-            }
 
-            override fun onFinish() {
-                if (currentExercisePosition < exerciseList!!.size - 1) {
-                    exerciseList!![currentExercisePosition ].setIsComplated(true)
-                    exerciseAdapter!!.notifyItemChanged(currentExercisePosition)
-                    setReadyTimer()
-
-                } else {
-                    val intent = Intent(this@ExerciseActivity, FinishActivity::class.java)
-                    startActivity(intent)
-                    finish()
                 }
 
-            }
-        }.start()
+                override fun onFinish() {
+                    if (currentExercisePosition < exerciseList!!.size - 1) {
+                        exerciseList!![currentExercisePosition].setIsComplated(true)
+                        exerciseAdapter!!.notifyItemChanged(currentExercisePosition)
+                        setReadyTimer()
+
+                    } else {
+                        val intent = Intent(this@ExerciseActivity, FinishActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+
+                }
+            }.start()
 
     }
 
