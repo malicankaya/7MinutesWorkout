@@ -10,4 +10,5 @@
     <string name="finish_activity_button_text_finish">FINISH</string>
     <string name="mainactivity_fl_bmi_text">BMI</string>
     <string name="mainactivity_tv_calculator_text">Calculator</string>
+    <string name="mainacticity_tv_history_text">History</string>
 </resources>

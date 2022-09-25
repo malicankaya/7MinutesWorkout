@@ -52,7 +52,7 @@ class BMIActivity : AppCompatActivity() {
                     height = (heightChangeToMetric(
                         binding?.etUSFeet?.text.toString().toFloat(),
                         binding?.etUSInch?.text.toString().toFloat()
-                                )) / 100
+                    )) / 100
                 }
 
                 val bmi = calculateBMI(
@@ -185,6 +185,11 @@ class BMIActivity : AppCompatActivity() {
 
     private fun heightChangeToMetric(feet: Float, inches: Float): Float {
         return (feet * 30.48f) + (inches * 2.54f)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
     }
 
     data class BMIType(val type: String, val description: String)
