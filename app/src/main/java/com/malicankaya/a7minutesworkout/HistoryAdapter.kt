@@ -50,7 +50,7 @@ class HistoryAdapter(
         }
 
         holder.delete.setOnClickListener {
-            deleteRecord.invoke(holder.date.toString())
+            deleteRecord.invoke(holder.date.text.toString())
         }
 
     }

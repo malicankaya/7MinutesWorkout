@@ -30,15 +30,15 @@ class HistoryActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             dao.getAllHistoryData().collect {
-                listHistoryData(dao,it)
+                listHistoryData(dao,ArrayList(it))
             }
         }
     }
 
-    private fun listHistoryData(historyDao: HistoryDao, historyList: List<HistoryEntity>) {
-        val adapter = HistoryAdapter(historyList) {
+    private fun listHistoryData(historyDao: HistoryDao, historyList: ArrayList<HistoryEntity>) {
+        val adapter = HistoryAdapter(historyList,{
             deleteRecord(it, historyDao)
-        }
+        })
         if(historyList.isEmpty()){
             binding?.tvNoRecords?.visibility = View.VISIBLE
             binding?.rvHistory?.visibility = View.INVISIBLE

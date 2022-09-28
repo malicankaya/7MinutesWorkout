@@ -14,6 +14,16 @@
         app:title="HISTORY" />
 
     <TextView
+        android:id="@+id/tvExerciseCompleted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/toolbarHistory"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="EXERCISES COMPLETED"
+        android:textSize="22sp"/>
+
+    <TextView
         android:id="@+id/tvNoRecords"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,6 +31,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/black"
         android:text="No records available"
         android:textSize="22sp"/>
 
@@ -32,7 +43,7 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@id/toolbarHistory"
+        app:layout_constraintTop_toBottomOf="@id/tvExerciseCompleted"
         tools:listitem="@layout/history_row" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
