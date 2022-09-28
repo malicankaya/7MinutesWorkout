@@ -11,7 +11,28 @@
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="HISTORY"
-        />
+        app:title="HISTORY" />
+
+    <TextView
+        android:id="@+id/tvNoRecords"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="No records available"
+        android:textSize="22sp"/>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        tools:visibility="invisible"
+        android:id="@+id/rvHistory"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/toolbarHistory"
+        tools:listitem="@layout/history_row" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
