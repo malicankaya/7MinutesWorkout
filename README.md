@@ -2,10 +2,7 @@
 A workoup application with Room DB, TTS and MediaPlayer featured
 
 <div>
-<img style= "border-left: 6px solid blue;
-      height: 200px;
-      position:absolute;
-      left: 50%;" src="https://user-images.githubusercontent.com/24587856/192887947-cb0ca110-f629-40fb-abda-638e2e739e5d.png" width="300" height="630"/>
+<img src="https://user-images.githubusercontent.com/24587856/192887947-cb0ca110-f629-40fb-abda-638e2e739e5d.png" width="300" height="630"/>
 <img src="https://user-images.githubusercontent.com/24587856/192887959-411a614a-9042-48da-8f65-d64d848a8483.png" width="300" height="630">
  </div>
  <hr />
